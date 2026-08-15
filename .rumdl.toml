@@ -1,0 +1,6 @@
+# reflow=true rewraps prose on --fix, so wide writing is normalized rather than rejected.
+[MD013]
+line_length = 80
+reflow = true
+code_blocks = false
+tables = false

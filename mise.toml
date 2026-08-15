@@ -6,11 +6,20 @@ jobs = 4
 
 [tools]
 go = "1.26.6"
-golangci-lint = "2.12.2"
 goreleaser = "2.17.1"
 gotestsum = "1.13.0"
 hk = "1.55.0"
 pkl = "0.32.1"
+
+# Linters
+actionlint = "1.7.12"
+"aqua:grafana/flint" = "0.22.10"
+"aqua:owenlamont/ryl" = "0.21.0"
+golangci-lint = "2.12.2"
+rumdl = "0.2.55"
+shellcheck = "0.11.0"
+taplo = "0.10.0"
+typos = "1.49.0"
 
 [env]
 HK_MISE = 1
@@ -20,5 +29,5 @@ enter = ["mise install"]
 postinstall = ["hk install --mise"]
 
 [tasks.gate]
-description = "Everything CI runs: format check, vet, lint, tests"
-depends = ["fmt", "vet", "lint", "test"]
+description = "Everything CI runs: vet, lint, tests"
+depends = ["vet", "lint", "test"]

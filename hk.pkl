@@ -9,12 +9,37 @@ local gate = new Mapping<String, Step> {
   ["end-of-file"]             = Builtins.newlines
   ["gofmt"] = new Step {
     glob = List("**/*.go")
-    fix = "mise run fmt --write"
+    fix = "flint run --fix --allow-fixed gofmt"
   }
-  ["go"] = new Step {
+  ["golangci-lint"] = new Step {
     glob = List("**/*.go", "go.mod", "go.sum")
-    check = "mise run vet && mise run lint"
+    check = "flint run golangci-lint"
     exclusive = true
+  }
+  ["go-vet"] = new Step {
+    glob = List("**/*.go", "go.mod", "go.sum")
+    check = "mise run vet"
+    exclusive = true
+  }
+  ["shellcheck"] = new Step {
+    glob = List("**/*.sh")
+    check = "flint run shellcheck"
+  }
+  ["actionlint"] = new Step {
+    glob = List(".github/workflows/*.yml", ".github/workflows/*.yaml")
+    check = "flint run actionlint"
+  }
+  ["ryl"] = new Step {
+    glob = List("**/*.yml", "**/*.yaml")
+    fix = "flint run --fix --allow-fixed ryl"
+  }
+  ["rumdl"] = new Step {
+    glob = List("**/*.md")
+    fix = "flint run --fix --allow-fixed rumdl"
+  }
+  ["taplo"] = new Step {
+    glob = List("**/*.toml")
+    fix = "flint run --fix --allow-fixed taplo"
   }
 }
 

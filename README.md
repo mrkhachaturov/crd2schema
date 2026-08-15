@@ -16,11 +16,11 @@ The usual path is datreeio's `crd-extractor.sh`, which downloads
 `openapi2jsonschema.py` from kubeconform's default branch at run time. That
 script walks the schema as untyped maps, so it cannot tell the JSON Schema
 keyword `properties` from a CRD field that happens to be named `properties`.
-When a CRD declares one — external-secrets does — it writes `additionalProperties:
-false` inside the field list, where draft-4 requires a schema. The file is then
-rejected by every validator, and kubeconform reports that as *"could not find
-schema"*, which reads like the catalog is missing an entry rather than serving a
-broken one.
+When a CRD declares one — external-secrets does — it writes
+`additionalProperties: false` inside the field list, where draft-4 requires a
+schema. The file is then rejected by every validator, and kubeconform reports
+that as *"could not find schema"*, which reads like the catalog is missing an
+entry rather than serving a broken one.
 
 `crd2schema` reads CRDs through the Kubernetes types themselves:
 
@@ -46,9 +46,9 @@ Kubernetes layers on top:
 | an object with `properties` | `additionalProperties: false` |
 
 The last row is a deliberate addition. The apiserver rejects unknown fields by
-pruning them against the structural schema, which leaves no trace in the schema a
-validator downloads — so an object that lists its fields has to say the list is
-exhaustive, or a typo passes review. Objects carrying
+pruning them against the structural schema, which leaves no trace in the schema
+a validator downloads — so an object that lists its fields has to say the list
+is exhaustive, or a typo passes review. Objects carrying
 `x-kubernetes-preserve-unknown-fields` keep accepting anything, and a CRD that
 declares its own `additionalProperties` keeps it.
 
@@ -58,7 +58,8 @@ declares its own `additionalProperties` keeps it.
 mise use ubi:mrkhachaturov/crd2schema
 ```
 
-or download a binary from the [releases](https://github.com/mrkhachaturov/crd2schema/releases).
+or download a binary from the
+[releases](https://github.com/mrkhachaturov/crd2schema/releases).
 
 ## Development
 
