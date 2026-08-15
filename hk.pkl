@@ -41,6 +41,11 @@ local gate = new Mapping<String, Step> {
     glob = List("**/*.toml")
     fix = "flint run --fix --allow-fixed taplo"
   }
+  ["test"] = new Step {
+    glob = List("**/*.go", "go.mod", "go.sum")
+    check = "mise run test"
+    exclusive = true
+  }
 }
 
 hooks {
@@ -53,16 +58,6 @@ hooks {
   ["commit-msg"] {
     steps {
       ["conventional-commit"] = Builtins.check_conventional_commit
-    }
-  }
-
-  ["pre-push"] {
-    steps {
-      ["test"] = new Step {
-        glob = List("**/*.go", "go.mod", "go.sum")
-        check = "mise run test"
-        exclusive = true
-      }
     }
   }
 
