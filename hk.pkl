@@ -1,0 +1,49 @@
+amends "package://github.com/jdx/hk/releases/download/v1.55.0/hk@1.55.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v1.55.0/hk@1.55.0#/Builtins.pkl"
+
+local gate = new Mapping<String, Step> {
+  ["detect-private-key"]      = Builtins.detect_private_key
+  ["check-merge-conflict"]    = Builtins.check_merge_conflict
+  ["check-added-large-files"] = Builtins.check_added_large_files
+  ["trailing-whitespace"]     = Builtins.trailing_whitespace
+  ["end-of-file"]             = Builtins.newlines
+  ["gofmt"] = new Step {
+    glob = List("**/*.go")
+    fix = "mise run fmt --write"
+  }
+  ["go"] = new Step {
+    glob = List("**/*.go", "go.mod", "go.sum")
+    check = "mise run vet && mise run lint"
+    exclusive = true
+  }
+}
+
+hooks {
+  ["pre-commit"] {
+    fix = true
+    stash = "git"
+    steps = gate
+  }
+
+  ["commit-msg"] {
+    steps {
+      ["conventional-commit"] = Builtins.check_conventional_commit
+    }
+  }
+
+  ["pre-push"] {
+    steps {
+      ["test"] = new Step {
+        glob = List("**/*.go", "go.mod", "go.sum")
+        check = "mise run test"
+        exclusive = true
+      }
+    }
+  }
+
+  ["check"] { steps = gate }
+  ["fix"] {
+    fix = true
+    steps = gate
+  }
+}
